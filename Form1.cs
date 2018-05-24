@@ -1,6 +1,9 @@
 ﻿using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
+using System.Data.OleDb;
+using System.Data;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Xml;
@@ -14,11 +17,15 @@ namespace OpenExcel
         Workbook xlWorkBook;
         Worksheet xlWorkSheet;
         Range range;
-
+        
         public Form1()
         {
             InitializeComponent();
         }
+
+        string caminhoArquivo;//para v2
+        string extensaoArquivo;//para v2
+        string stringConexao;//para v2
 
         public void openFile()
         {
@@ -28,43 +35,73 @@ namespace OpenExcel
 
             if (openFile.ShowDialog() == DialogResult.OK)
             {
-                string caminhoArquivo = openFile.FileName;
+                caminhoArquivo = openFile.FileName;
+                extensaoArquivo = Path.GetExtension(caminhoArquivo); //para v2
                 xlApp = new Excel.Application();
                 xlWorkBook = xlApp.Workbooks.Open(caminhoArquivo);
                 txtNameFile.Text = caminhoArquivo;
+                xlWorkSheet = (Worksheet)xlWorkBook.Sheets[1];
+
+                //MessageBox.Show(extensaoArquivo);//para v2
             }
+
+        }
+
+        public void readFile()
+        {
+            if (extensaoArquivo == ".xls" || extensaoArquivo == ".XLS")
+                stringConexao = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + caminhoArquivo + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=2\"";
+            else if (extensaoArquivo == ".xlsx" || extensaoArquivo == ".XLSX")
+                stringConexao = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + caminhoArquivo + ";Extended Properties=\"Excel 12.0;HDR=Yes;IMEX=2\"";
+
+            OleDbConnection connection = new OleDbConnection(stringConexao);
+            OleDbCommand commmand = new OleDbCommand();
+            commmand.Connection = connection;
+            OleDbDataAdapter dataAdapter = new OleDbDataAdapter(commmand);
+            System.Data.DataTable dataTable = new System.Data.DataTable();
+            connection.Open();
+            System.Data.DataTable dataSheet = connection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
+            string sheetName = dataSheet.Rows[0]["table_name"].ToString();
+            commmand.CommandText = "select * from [" + sheetName + "]";
+            dataAdapter.SelectCommand = commmand;
+            dataAdapter.Fill(dataTable);
+            connection.Close();
+            dataGridView1.DataSource = dataTable;
+            //dataGridView1.;
 
         }
 
         private void btnOpenFiles_Click(object sender, EventArgs e)
         {
             openFile();
-
-            xlWorkSheet = (Worksheet)xlWorkBook.Sheets[1];
-
-            string str = "";
-            int rCnt = 2;
-            int cCnt = 1;
-            int rw = 0;
-            int cl = 0;
-
-            range = xlWorkSheet.UsedRange;
-            rw = range.Rows.Count;
-            cl = range.Columns.Count;
-
-            List<AcctOpngInstr> _acctOpngInstr = new List<AcctOpngInstr>();
-
-            for (rCnt = 1; rCnt <= rw; rCnt++)
-            {
-                for (cCnt = 1; cCnt <= cl; cCnt++)
-                {
-                    AcctOpngInstr acctOpngInstr = new AcctOpngInstr();
-                    acctOpngInstr.Nome = (range.Cells[rCnt, cCnt] as Excel.Range).Value2.ToString();
-                    _acctOpngInstr.Add(acctOpngInstr);
-
-                }
-            }
+            readFile();
             
+            
+            //-----------------------------------------------------------------------
+            //string str = "";
+            //int rCnt = 2;
+            //int cCnt = 1;
+            //int rw = 0;
+            //int cl = 0;
+
+            //range = xlWorkSheet.UsedRange;
+            //rw = range.Rows.Count;
+            //cl = range.Columns.Count;
+
+            //List<AcctOpngInstr> _acctOpngInstr = new List<AcctOpngInstr>();
+
+            //for (rCnt = 1; rCnt <= rw; rCnt++)
+            //{
+            //    for (cCnt = 1; cCnt <= cl; cCnt++)
+            //    {
+            //        AcctOpngInstr acctOpngInstr = new AcctOpngInstr();
+            //        acctOpngInstr.Nome = (range.Cells[rCnt, cCnt] as Excel.Range).Value2.ToString();
+            //        _acctOpngInstr.Add(acctOpngInstr);
+
+            //    }
+            //}
+            //----------------------------------------------------------------
+
             xlWorkBook.Close(true, null, null);
             xlApp.Quit();
 

@@ -8,3 +8,13 @@ C:\Users\Thiago Abucarub\Documents\GitHub\OpenExcel\OpenExcel\obj\Debug\OpenExce
 C:\Users\Thiago Abucarub\Documents\GitHub\OpenExcel\OpenExcel\obj\Debug\OpenExcel.csproj.CoreCompileInputs.cache
 C:\Users\Thiago Abucarub\Documents\GitHub\OpenExcel\OpenExcel\obj\Debug\OpenExcel.exe
 C:\Users\Thiago Abucarub\Documents\GitHub\OpenExcel\OpenExcel\obj\Debug\OpenExcel.pdb
+C:\Users\abucarub\Documents\GitHub\OpenExcel\bin\Debug\OpenExcel.exe.config
+C:\Users\abucarub\Documents\GitHub\OpenExcel\bin\Debug\OpenExcel.exe
+C:\Users\abucarub\Documents\GitHub\OpenExcel\bin\Debug\OpenExcel.pdb
+C:\Users\abucarub\Documents\GitHub\OpenExcel\obj\Debug\OpenExcel.csprojResolveAssemblyReference.cache
+C:\Users\abucarub\Documents\GitHub\OpenExcel\obj\Debug\OpenExcel.Form1.resources
+C:\Users\abucarub\Documents\GitHub\OpenExcel\obj\Debug\OpenExcel.Properties.Resources.resources
+C:\Users\abucarub\Documents\GitHub\OpenExcel\obj\Debug\OpenExcel.csproj.GenerateResource.Cache
+C:\Users\abucarub\Documents\GitHub\OpenExcel\obj\Debug\OpenExcel.csproj.CoreCompileInputs.cache
+C:\Users\abucarub\Documents\GitHub\OpenExcel\obj\Debug\OpenExcel.exe
+C:\Users\abucarub\Documents\GitHub\OpenExcel\obj\Debug\OpenExcel.pdb

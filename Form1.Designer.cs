@@ -38,6 +38,8 @@
             this.lblPhone2 = new System.Windows.Forms.Label();
             this.lblEmail2 = new System.Windows.Forms.Label();
             this.btnLoad = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnOpenFiles
@@ -75,7 +77,7 @@
             // 
             this.lblPhone.AutoSize = true;
             this.lblPhone.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPhone.Location = new System.Drawing.Point(29, 134);
+            this.lblPhone.Location = new System.Drawing.Point(29, 99);
             this.lblPhone.Name = "lblPhone";
             this.lblPhone.Size = new System.Drawing.Size(52, 16);
             this.lblPhone.TabIndex = 3;
@@ -85,7 +87,7 @@
             // 
             this.lblEmail.AutoSize = true;
             this.lblEmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEmail.Location = new System.Drawing.Point(29, 184);
+            this.lblEmail.Location = new System.Drawing.Point(30, 115);
             this.lblEmail.Name = "lblEmail";
             this.lblEmail.Size = new System.Drawing.Size(51, 16);
             this.lblEmail.TabIndex = 4;
@@ -103,7 +105,7 @@
             // lblPhone2
             // 
             this.lblPhone2.AutoSize = true;
-            this.lblPhone2.Location = new System.Drawing.Point(116, 134);
+            this.lblPhone2.Location = new System.Drawing.Point(113, 101);
             this.lblPhone2.Name = "lblPhone2";
             this.lblPhone2.Size = new System.Drawing.Size(35, 13);
             this.lblPhone2.TabIndex = 6;
@@ -112,7 +114,7 @@
             // lblEmail2
             // 
             this.lblEmail2.AutoSize = true;
-            this.lblEmail2.Location = new System.Drawing.Point(116, 184);
+            this.lblEmail2.Location = new System.Drawing.Point(110, 118);
             this.lblEmail2.Name = "lblEmail2";
             this.lblEmail2.Size = new System.Drawing.Size(35, 13);
             this.lblEmail2.TabIndex = 7;
@@ -128,11 +130,20 @@
             this.btnLoad.UseVisualStyleBackColor = true;
             this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(154, 83);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(424, 202);
+            this.dataGridView1.TabIndex = 9;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(924, 297);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnLoad);
             this.Controls.Add(this.lblEmail2);
             this.Controls.Add(this.lblPhone2);
@@ -144,6 +155,7 @@
             this.Controls.Add(this.btnOpenFiles);
             this.Name = "Form1";
             this.Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -161,6 +173,7 @@
         private System.Windows.Forms.Label lblPhone2;
         private System.Windows.Forms.Label lblEmail2;
         private System.Windows.Forms.Button btnLoad;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }
 
