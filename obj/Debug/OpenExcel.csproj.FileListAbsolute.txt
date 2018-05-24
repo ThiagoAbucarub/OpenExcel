@@ -1,0 +1,10 @@
+C:\Users\Thiago Abucarub\Documents\GitHub\OpenExcel\OpenExcel\bin\Debug\OpenExcel.exe.config
+C:\Users\Thiago Abucarub\Documents\GitHub\OpenExcel\OpenExcel\bin\Debug\OpenExcel.exe
+C:\Users\Thiago Abucarub\Documents\GitHub\OpenExcel\OpenExcel\bin\Debug\OpenExcel.pdb
+C:\Users\Thiago Abucarub\Documents\GitHub\OpenExcel\OpenExcel\obj\Debug\OpenExcel.csprojAssemblyReference.cache
+C:\Users\Thiago Abucarub\Documents\GitHub\OpenExcel\OpenExcel\obj\Debug\OpenExcel.Form1.resources
+C:\Users\Thiago Abucarub\Documents\GitHub\OpenExcel\OpenExcel\obj\Debug\OpenExcel.Properties.Resources.resources
+C:\Users\Thiago Abucarub\Documents\GitHub\OpenExcel\OpenExcel\obj\Debug\OpenExcel.csproj.GenerateResource.cache
+C:\Users\Thiago Abucarub\Documents\GitHub\OpenExcel\OpenExcel\obj\Debug\OpenExcel.csproj.CoreCompileInputs.cache
+C:\Users\Thiago Abucarub\Documents\GitHub\OpenExcel\OpenExcel\obj\Debug\OpenExcel.exe
+C:\Users\Thiago Abucarub\Documents\GitHub\OpenExcel\OpenExcel\obj\Debug\OpenExcel.pdb
