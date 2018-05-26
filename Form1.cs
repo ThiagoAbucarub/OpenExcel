@@ -13,41 +13,51 @@ namespace OpenExcel
 {
     public partial class Form1 : Form
     {
-        Excel.Application xlApp;
-        Workbook xlWorkBook;
-        Worksheet xlWorkSheet;
-        Range range;
-        
+        Excel.Application excelApp;
+        Workbook excelWorkBook;
+        Worksheet excelWorkSheet;
+        System.Data.DataTable dataTable;
+
+        string caminhoArquivo, extensaoArquivo, stringConexao, salvarXML, id1;
+
+        int i = 0;
+        int totalLinhas = 1;
+
         public Form1()
         {
             InitializeComponent();
         }
 
-        string caminhoArquivo;//para v2
-        string extensaoArquivo;//para v2
-        string stringConexao;//para v2
-
-        public void openFile()
+        private void BtnOpenFiles_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFile = new OpenFileDialog();
-            openFile.Title = "Abrir Arquivo";
-            openFile.Filter = "Arquivo Excel |*.xls;*.xlsx";
-
-            if (openFile.ShowDialog() == DialogResult.OK)
-            {
-                caminhoArquivo = openFile.FileName;
-                extensaoArquivo = Path.GetExtension(caminhoArquivo); //para v2
-                xlApp = new Excel.Application();
-                xlWorkBook = xlApp.Workbooks.Open(caminhoArquivo);
-                txtNameFile.Text = caminhoArquivo;
-                xlWorkSheet = (Worksheet)xlWorkBook.Sheets[1];
-
-                //MessageBox.Show(extensaoArquivo);//para v2
-            }
-
+            AbrirArquivo();
+            LerArquivo();
         }
 
-        public void readFile()
+       private void BtnSaveXml_Click(object sender, EventArgs e)
+        {
+            GerarXml();
+            LimparMemoria();
+        }
+
+        private void AbrirArquivo()
+        {
+            OpenFileDialog abrirArquivo = new OpenFileDialog();
+            abrirArquivo.Title = "Abrir Arquivo";
+            abrirArquivo.Filter = "Arquivo Excel |*.xls;*.xlsx";
+
+            if (abrirArquivo.ShowDialog() == DialogResult.OK)
+            {
+                caminhoArquivo = abrirArquivo.FileName;
+                extensaoArquivo = Path.GetExtension(caminhoArquivo);
+                excelApp = new Excel.Application();
+                excelWorkBook = excelApp.Workbooks.Open(caminhoArquivo);
+                txtNameFile.Text = caminhoArquivo;
+                excelWorkSheet = (Worksheet)excelWorkBook.Sheets[1];
+            }
+        }
+
+        private void LerArquivo()
         {
             if (extensaoArquivo == ".xls" || extensaoArquivo == ".XLS")
                 stringConexao = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + caminhoArquivo + ";Extended Properties=\"Excel 8.0;HDR=Yes;IMEX=2\"";
@@ -58,64 +68,23 @@ namespace OpenExcel
             OleDbCommand commmand = new OleDbCommand();
             commmand.Connection = connection;
             OleDbDataAdapter dataAdapter = new OleDbDataAdapter(commmand);
-            System.Data.DataTable dataTable = new System.Data.DataTable();
+            dataTable = new System.Data.DataTable();
             connection.Open();
+
             System.Data.DataTable dataSheet = connection.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
             string sheetName = dataSheet.Rows[0]["table_name"].ToString();
             commmand.CommandText = "select * from [" + sheetName + "]";
             dataAdapter.SelectCommand = commmand;
             dataAdapter.Fill(dataTable);
             connection.Close();
+
             dataGridView1.DataSource = dataTable;
-            //dataGridView1.;
 
+            DataSet dataSet = new DataSet();
+            dataSet.Tables.Add(dataTable);
+            totalLinhas = dataTable.Rows.Count;
         }
 
-        private void btnOpenFiles_Click(object sender, EventArgs e)
-        {
-            openFile();
-            readFile();
-            
-            
-            //-----------------------------------------------------------------------
-            //string str = "";
-            //int rCnt = 2;
-            //int cCnt = 1;
-            //int rw = 0;
-            //int cl = 0;
-
-            //range = xlWorkSheet.UsedRange;
-            //rw = range.Rows.Count;
-            //cl = range.Columns.Count;
-
-            //List<AcctOpngInstr> _acctOpngInstr = new List<AcctOpngInstr>();
-
-            //for (rCnt = 1; rCnt <= rw; rCnt++)
-            //{
-            //    for (cCnt = 1; cCnt <= cl; cCnt++)
-            //    {
-            //        AcctOpngInstr acctOpngInstr = new AcctOpngInstr();
-            //        acctOpngInstr.Nome = (range.Cells[rCnt, cCnt] as Excel.Range).Value2.ToString();
-            //        _acctOpngInstr.Add(acctOpngInstr);
-
-            //    }
-            //}
-            //----------------------------------------------------------------
-
-            xlWorkBook.Close(true, null, null);
-            xlApp.Quit();
-
-            Marshal.ReleaseComObject(xlWorkSheet);
-            Marshal.ReleaseComObject(xlWorkBook);
-            Marshal.ReleaseComObject(xlApp);
-
-        }
-
-        private void btnLoad_Click(object sender, EventArgs e)
-        {
-            GerarXml();
-        }
-    
         private void GerarXml()
         {
             XmlDocument xml = new XmlDocument();
@@ -123,36 +92,67 @@ namespace OpenExcel
             XmlElement root = xml.DocumentElement;
             xml.InsertBefore(xmlDeclaration, root);
 
-            XmlElement Dados = xml.CreateElement("Dados");
-            xml.AppendChild(Dados);
+            XmlElement dados = xml.CreateElement("Dados");
+            xml.AppendChild(dados);
 
-            XmlElement Nome = xml.CreateElement("Nome");
-            Nome.AppendChild(xml.CreateTextNode(lblName2.Text));
-            Dados.AppendChild(Nome);
-
-            XmlElement Phone = xml.CreateElement("Telefone");
-            Phone.AppendChild(xml.CreateTextNode(lblPhone2.Text));
-            Dados.AppendChild(Phone);
-
-            XmlElement Email = xml.CreateElement("Sexo");
-            Email.AppendChild(xml.CreateTextNode(lblEmail2.Text));
-            Dados.AppendChild(Email);
-
-
-            SaveFileDialog saveFile = new SaveFileDialog();
-            saveFile.Title = "Save As";
-            saveFile.Filter = "XML Files |*.xml";
-            saveFile.FilterIndex = 0;
-            saveFile.FileName = "Sample_" + DateTime.Now.ToString("ddMMyyyy_HHmmss");
-            saveFile.InitialDirectory = @"c:\xml";
-            saveFile.RestoreDirectory = true;
-
-            if (saveFile.ShowDialog() == DialogResult.OK)
+            for (i = 0; i < totalLinhas; i++)
             {
-                xml.Save(saveFile.FileName);
+                id1 = dataTable.Rows[i].ItemArray[1].ToString();
+
+                XmlElement info = xml.CreateElement("Informações");
+
+                XmlElement id = xml.CreateElement("Id");
+                id.InnerText = dataTable.Rows[i].ItemArray[0].ToString();
+                info.AppendChild(id);
+
+                XmlElement nome = xml.CreateElement("Nome");
+                nome.InnerText = dataTable.Rows[i].ItemArray[1].ToString();
+                info.AppendChild(nome);
+
+                XmlElement telefone = xml.CreateElement("Telefone");
+                telefone.InnerText = dataTable.Rows[i].ItemArray[2].ToString();
+                info.AppendChild(telefone);
+
+                XmlElement sexo = xml.CreateElement("Sexo");
+                sexo.InnerText = dataTable.Rows[i].ItemArray[3].ToString();
+                info.AppendChild(sexo);
+
+                dados.AppendChild(info);
+                xml.DocumentElement.AppendChild(info);
+            }
+
+            SalvarArquivo();
+
+            xml.Save(salvarXML);
+
+        }
+
+        private void SalvarArquivo()
+        {
+            SaveFileDialog salvarArquivo = new SaveFileDialog();
+            salvarArquivo.Title = "Save As";
+            salvarArquivo.Filter = "XML Files |*.xml";
+            salvarArquivo.FilterIndex = 0;
+            salvarArquivo.FileName = "Sample_" + DateTime.Now.ToString("ddMMyyyy_HHmmss");
+            salvarArquivo.InitialDirectory = @"c:\xml";
+            salvarArquivo.RestoreDirectory = true;
+
+            if (salvarArquivo.ShowDialog() == DialogResult.OK)
+            {
+                salvarXML = salvarArquivo.FileName;
                 MessageBox.Show("Arquivo salvo!");
             }
-            
         }
+
+        private void LimparMemoria()
+        {
+            excelWorkBook.Close(true, null, null);
+            excelApp.Quit();
+
+            Marshal.ReleaseComObject(excelWorkSheet);
+            Marshal.ReleaseComObject(excelWorkBook);
+            Marshal.ReleaseComObject(excelApp);
+        }
+        
     }
 }
